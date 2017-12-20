@@ -54,6 +54,10 @@ extern "C" {
     pub fn NFD_OpenDialogMultiple(filterList: *const nfdchar_t, defaultPath: *const nfdchar_t, outPaths: *mut nfdpathset_t) -> nfdresult_t;
     pub fn NFD_SaveDialog(filterList: *const nfdchar_t, defaultPath: *const nfdchar_t, outPath: *mut *mut nfdchar_t) -> nfdresult_t;
     pub fn NFD_PickFolder(defaultPath: *const nfdchar_t, outPath: *mut *mut nfdchar_t) -> nfdresult_t;
+    pub fn NFD_OpenDialogTitled(title: *const nfdchar_t, filterList: *const nfdchar_t, defaultPath: *const nfdchar_t, outPath: *mut *mut nfdchar_t) -> nfdresult_t;
+    pub fn NFD_OpenDialogMultipleTitled(title: *const nfdchar_t, filterList: *const nfdchar_t, defaultPath: *const nfdchar_t, outPaths: *mut nfdpathset_t) -> nfdresult_t;
+    pub fn NFD_SaveDialogTitled(title: *const nfdchar_t, filterList: *const nfdchar_t, defaultPath: *const nfdchar_t, outPath: *mut *mut nfdchar_t) -> nfdresult_t;
+    pub fn NFD_PickFolderTitled(title: *const nfdchar_t, defaultPath: *const nfdchar_t, outPath: *mut *mut nfdchar_t) -> nfdresult_t;
     pub fn NFD_GetError() -> *const raw::c_char;
     pub fn NFD_PathSet_GetCount(pathSet: *const nfdpathset_t) -> size_t;
     pub fn NFD_PathSet_GetPath(pathSet: *const nfdpathset_t, index: size_t) -> *mut nfdchar_t;

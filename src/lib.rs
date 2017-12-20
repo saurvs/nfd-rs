@@ -47,6 +47,7 @@ pub enum DialogType {
 }
 
 pub struct DialogBuilder<'a> {
+	title: Option<&'a str>,
     filter: Option<&'a str>,
     default_path: Option<&'a str>,
     dialog_type: DialogType,
@@ -56,11 +57,17 @@ impl<'a> DialogBuilder<'a> {
 
     pub fn new(dialog_type: DialogType) -> Self {
         DialogBuilder {
+			title: None,
             filter: None,
             default_path: None,
             dialog_type: dialog_type,
         }
     }
+   
+    pub fn title(&'a mut self, title: &'a str) -> &mut DialogBuilder {
+		self.title = Some(title);
+		self
+	}
 
     pub fn filter(&'a mut self, filter: &'a str) -> &mut DialogBuilder {
         self.filter = Some(filter);
@@ -73,7 +80,7 @@ impl<'a> DialogBuilder<'a> {
     }
 
     pub fn open(&self) -> Result<Response> {
-        open_dialog(self.filter, self.default_path, self.dialog_type.clone())
+        open_dialog(self.title, self.filter, self.default_path, self.dialog_type.clone())
     }
 }
 
@@ -92,29 +99,55 @@ pub fn dialog_save<'a>() -> DialogBuilder<'a> {
 pub type Result<T> = std::result::Result<T, NFDError>;
 
 /// Open single file dialog
-pub fn open_file_dialog(filter_list: Option<&str>, default_path: Option<&str>) -> Result<Response> {
-    open_dialog(filter_list, default_path, DialogType::SingleFile)
+pub fn open_file_dialog(title: Option<&str>, filter_list: Option<&str>, default_path: Option<&str>) -> Result<Response> {
+    open_dialog(title, filter_list, default_path, DialogType::SingleFile)
 }
 
 /// Open mulitple file dialog
-pub fn open_file_multiple_dialog(filter_list: Option<&str>, default_path: Option<&str>) -> Result<Response> {
-    open_dialog(filter_list, default_path, DialogType::MultipleFiles)
+pub fn open_file_multiple_dialog(title: Option<&str>, filter_list: Option<&str>, default_path: Option<&str>) -> Result<Response> {
+    open_dialog(title, filter_list, default_path, DialogType::MultipleFiles)
 }
 
 /// Open save dialog
-pub fn open_save_dialog(filter_list: Option<&str>, default_path: Option<&str>) -> Result<Response> {
-    open_dialog(filter_list, default_path, DialogType::SaveFile)
+pub fn open_save_dialog(title: Option<&str>, filter_list: Option<&str>, default_path: Option<&str>) -> Result<Response> {
+    open_dialog(title, filter_list, default_path, DialogType::SaveFile)
 }
 
 /// Open save dialog
-pub fn open_pick_folder(default_path: Option<&str>) -> Result<Response> {
-    open_dialog(None, default_path, DialogType::PickFolder)
+pub fn open_pick_folder(title: Option<&str>, default_path: Option<&str>) -> Result<Response> {
+    open_dialog(title, None, default_path, DialogType::PickFolder)
 }
 
-pub fn open_dialog(filter_list: Option<&str>, default_path: Option<&str>, dialog_type: DialogType) -> Result<Response> {
+pub fn open_dialog(title: Option<&str>, filter_list: Option<&str>, default_path: Option<&str>, dialog_type: DialogType) -> Result<Response> {
     let result;
+    let title_cstring;
     let filter_list_cstring;
     let default_path_cstring;
+    
+    let title_ptr = match title {
+		Some(ttl) => {
+			title_cstring = try!(CString::new(ttl));
+			title_cstring.as_ptr()
+		},
+		None => match dialog_type {
+            DialogType::SingleFile => {
+				title_cstring = CString::new("Open file")?;
+				title_cstring.as_ptr()
+            },
+            DialogType::MultipleFiles => {
+				title_cstring = try!(CString::new("Open files"));
+				title_cstring.as_ptr()
+            },
+            DialogType::SaveFile => {
+				title_cstring = try!(CString::new("Save file"));
+				title_cstring.as_ptr()
+            },
+            DialogType::PickFolder => {
+				title_cstring = try!(CString::new("Select folder"));
+				title_cstring.as_ptr()
+            }
+        },
+	};
 
     let filter_list_ptr = match filter_list {
         Some(fl_str) => {
@@ -141,19 +174,19 @@ pub fn open_dialog(filter_list: Option<&str>, default_path: Option<&str>, dialog
     unsafe {
         result = match dialog_type {
             DialogType::SingleFile => {
-                NFD_OpenDialog(filter_list_ptr, default_path_ptr, ptr_out_path)
+                NFD_OpenDialogTitled(title_ptr, filter_list_ptr, default_path_ptr, ptr_out_path)
             },
 
             DialogType::MultipleFiles => {
-                NFD_OpenDialogMultiple(filter_list_ptr, default_path_ptr, ptr_out_multiple)
+                NFD_OpenDialogMultipleTitled(title_ptr, filter_list_ptr, default_path_ptr, ptr_out_multiple)
             },
 
             DialogType::SaveFile => {
-                NFD_SaveDialog(filter_list_ptr, default_path_ptr, ptr_out_path)
+                NFD_SaveDialogTitled(title_ptr, filter_list_ptr, default_path_ptr, ptr_out_path)
             },
 
             DialogType::PickFolder => {
-                NFD_PickFolder(default_path_ptr, ptr_out_path)
+                NFD_PickFolderTitled(title_ptr, default_path_ptr, ptr_out_path)
             },
         };
 
