@@ -20,8 +20,8 @@
    THE SOFTWARE.
 */
 
-mod ffi;
-mod error;
+pub mod ffi;
+pub mod error;
 
 use ffi::*;
 use std::ffi::{CStr, CString};
