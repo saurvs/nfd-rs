@@ -20,7 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-extern crate gcc;
+extern crate cc;
+
 use std::env;
 use std::process::Command;
 
@@ -31,7 +32,7 @@ macro_rules! nfd {
 }
 
 fn main() {
-    let mut cfg = gcc::Config::new();
+    let mut cfg = cc::Build::new();
     let env = env::var("TARGET").unwrap();
 
     cfg.include(nfd!("include"));
