@@ -20,15 +20,7 @@ impl fmt::Display for NFDError {
     }
 }
 
-impl Error for NFDError {
-    fn description(&self) -> &str {
-        match *self {
-            NFDError::NulError(ref err) => err.description(),
-            NFDError::Error(ref err) => err,
-            NFDError::Utf8Error(ref err) => err.description(),
-        }
-    }
-}
+impl Error for NFDError {}
 
 impl From<ffi::NulError> for NFDError {
     fn from(err: ffi::NulError) -> NFDError {

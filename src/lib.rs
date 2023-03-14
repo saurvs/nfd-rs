@@ -118,7 +118,7 @@ pub fn open_dialog(filter_list: Option<&str>, default_path: Option<&str>, dialog
 
     let filter_list_ptr = match filter_list {
         Some(fl_str) => {
-            filter_list_cstring = try!(CString::new(fl_str));
+            filter_list_cstring = CString::new(fl_str)?;
             filter_list_cstring.as_ptr()
         }
         None => std::ptr::null()
@@ -126,7 +126,7 @@ pub fn open_dialog(filter_list: Option<&str>, default_path: Option<&str>, dialog
 
     let default_path_ptr = match default_path {
         Some(dp_str) => {
-            default_path_cstring = try!(CString::new(dp_str));
+            default_path_cstring = CString::new(dp_str)?;
             default_path_cstring.as_ptr()
         }
         None => std::ptr::null()
