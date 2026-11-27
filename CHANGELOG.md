@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1 (2026-11-27)
+
+- Repository and documentation links point to `github.com/sauravsc` after the GitHub account
+  was renamed from `saurvs`. No code changes.
+
 ## 0.1.0 (2026-11-27)
 
 The first release since 0.0.4 (October 2016). Thank you to everyone who reported issues and
