@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1 (2026-11-27)
+
+- Repository and documentation links point to `github.com/sauravsc` after the GitHub account
+  was renamed from `saurvs`. No code changes.
+
 ## 0.1.0 (2026-11-27)
 
 The first release since 0.0.4 (October 2016). Thank you to everyone who reported issues and
@@ -9,17 +14,17 @@ sent fixes while the crate went unreleased, and sorry for the long wait.
 
 - The bundled C library is now [Native File Dialog Extended](https://github.com/btzy/nativefiledialog-extended)
   1.4.1, the maintained successor of the 2016 nativefiledialog snapshot used before
-  ([#22](https://github.com/saurvs/nfd-rs/issues/22); supersedes
-  [#21](https://github.com/saurvs/nfd-rs/pull/21) by @repi and
-  [#25](https://github.com/saurvs/nfd-rs/pull/25) by @lockieluke).
+  ([#22](https://github.com/sauravsc/nfd-rs/issues/22); supersedes
+  [#21](https://github.com/sauravsc/nfd-rs/pull/21) by @repi and
+  [#25](https://github.com/sauravsc/nfd-rs/pull/25) by @lockieluke).
 - Linux and the BSDs use the XDG desktop portal by default, so GTK is no longer needed to build or
-  run ([#19](https://github.com/saurvs/nfd-rs/issues/19)). Building needs `pkg-config` and the
+  run ([#19](https://github.com/sauravsc/nfd-rs/issues/19)). Building needs `pkg-config` and the
   D-Bus development files instead. The new `gtk3` feature selects the GTK 3 backend.
 - Windows builds with both MSVC and MinGW-w64 toolchains
-  ([#18](https://github.com/saurvs/nfd-rs/issues/18), [#20](https://github.com/saurvs/nfd-rs/issues/20)).
+  ([#18](https://github.com/sauravsc/nfd-rs/issues/18), [#20](https://github.com/sauravsc/nfd-rs/issues/20)).
 - The build script uses `cc` instead of the deprecated `gcc` crate, which also removes the
-  future-incompatibility warning ([#28](https://github.com/saurvs/nfd-rs/pull/28) by @ctrlcctrlv).
-- The `error` and `ffi` modules are public ([#10](https://github.com/saurvs/nfd-rs/pull/10) by
+  future-incompatibility warning ([#28](https://github.com/sauravsc/nfd-rs/pull/28) by @ctrlcctrlv).
+- The `error` and `ffi` modules are public ([#10](https://github.com/sauravsc/nfd-rs/pull/10) by
   @ashkitten), and `NFDError` is re-exported from the crate root. `ffi` now contains raw bindings to
   Native File Dialog Extended.
 - Builder methods take `&mut self` rather than `&'a mut self`, so a builder can be configured over
@@ -37,7 +42,7 @@ sent fixes while the crate went unreleased, and sorry for the long wait.
 - `DialogBuilder::add_filter(name, extensions)` for filters with your own display names.
 - `DialogBuilder::title` and `DialogBuilder::default_name` (suggested file name for save dialogs).
 - `DialogBuilder::parent` (feature `raw-window-handle`) to keep a dialog in front of your window
-  ([#16](https://github.com/saurvs/nfd-rs/issues/16)).
+  ([#16](https://github.com/sauravsc/nfd-rs/issues/16)).
 - `dialog_pick_folder()` builder shortcut.
 
 ### Fixed
@@ -45,13 +50,13 @@ sent fixes while the crate went unreleased, and sorry for the long wait.
 - Paths returned by single-selection dialogs were never freed.
 - Only one dialog is open at a time across the process, and dialogs are refused (with an error)
   where the platform would crash: off the main thread on macOS, and on a second thread with GTK
-  ([#27](https://github.com/saurvs/nfd-rs/issues/27)).
+  ([#27](https://github.com/sauravsc/nfd-rs/issues/27)).
 - Windows: the `SHCreateItemFromParsingName` link error from 0.0.4
-  ([#14](https://github.com/saurvs/nfd-rs/issues/14), [#18](https://github.com/saurvs/nfd-rs/issues/18)),
-  fixed on master by @raphlinus in [#15](https://github.com/saurvs/nfd-rs/pull/15), is now released
-  ([#17](https://github.com/saurvs/nfd-rs/issues/17)).
+  ([#14](https://github.com/sauravsc/nfd-rs/issues/14), [#18](https://github.com/sauravsc/nfd-rs/issues/18)),
+  fixed on master by @raphlinus in [#15](https://github.com/sauravsc/nfd-rs/pull/15), is now released
+  ([#17](https://github.com/sauravsc/nfd-rs/issues/17)).
 - The default Linux backend no longer prints "GtkDialog mapped without a transient parent"
-  ([#8](https://github.com/saurvs/nfd-rs/issues/8)).
+  ([#8](https://github.com/sauravsc/nfd-rs/issues/8)).
 - Empty or wildcard-only filters (`""`, `";"`, `"*"`) are ignored instead of reaching the C
   library.
 
