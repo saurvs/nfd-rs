@@ -1,15 +1,12 @@
-extern crate nfd;
+//! Opens a multiple-file dialog.
 
 use nfd::Response;
 
-fn main() {
-    let result = nfd::dialog_multiple().open().unwrap_or_else(|e| {
-        panic!(e);
-    });
-
-    match result {
-        Response::OkayMultiple(files) => println!("File path = {:?}", files),
+fn main() -> Result<(), nfd::NFDError> {
+    match nfd::dialog_multiple().filter("png,jpg;pdf").open()? {
+        Response::OkayMultiple(files) => println!("Files = {files:?}"),
         Response::Cancel => println!("User canceled"),
-        _ => (),
+        Response::Okay(_) => unreachable!("multiple-file dialogs return a list"),
     }
+    Ok(())
 }

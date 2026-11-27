@@ -1,15 +1,17 @@
-extern crate nfd;
+//! Opens a single-file dialog that only shows JPEG files.
 
 use nfd::Response;
 
-fn main() {
-    let result = nfd::dialog().filter("jpg").open().unwrap_or_else(|e| {
-        panic!(e);
-    });
+fn main() -> Result<(), nfd::NFDError> {
+    let result = nfd::dialog()
+        .add_filter("JPEG images", "jpg,jpeg")
+        .title("Pick a photo")
+        .open()?;
 
     match result {
-        Response::Okay(file_path) => println!("File path = {:?}", file_path),
+        Response::Okay(file_path) => println!("File path = {file_path:?}"),
         Response::Cancel => println!("User canceled"),
-        _ => (),
+        Response::OkayMultiple(_) => unreachable!("single-file dialogs return one path"),
     }
+    Ok(())
 }
