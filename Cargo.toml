@@ -10,7 +10,7 @@ edition = "2024"
 rust-version = "1.85"
 # The Rust code is MIT; the bundled nativefiledialog-extended C library is Zlib.
 license = "MIT AND Zlib"
-repository = "https://github.com/saurvs/nfd-rs"
+repository = "https://github.com/sauravsc/nfd-rs"
 documentation = "https://docs.rs/nfd"
 readme = "README.md"
 description = "Native open, save and folder dialogs for Windows, macOS and Linux (bindings to nativefiledialog-extended)"

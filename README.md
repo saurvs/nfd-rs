@@ -2,7 +2,7 @@
 
 [![crates.io](https://img.shields.io/crates/v/nfd.svg)](https://crates.io/crates/nfd)
 [![docs.rs](https://img.shields.io/docsrs/nfd)](https://docs.rs/nfd)
-[![CI](https://github.com/saurvs/nfd-rs/actions/workflows/ci.yml/badge.svg)](https://github.com/saurvs/nfd-rs/actions/workflows/ci.yml)
+[![CI](https://github.com/sauravsc/nfd-rs/actions/workflows/ci.yml/badge.svg)](https://github.com/sauravsc/nfd-rs/actions/workflows/ci.yml)
 [![MSRV 1.85](https://img.shields.io/badge/MSRV-1.85-informational.svg)](#minimum-supported-rust-version)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md)
 
