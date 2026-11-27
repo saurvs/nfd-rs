@@ -1,20 +1,48 @@
 [package]
 name = "nfd"
-version = "0.0.4"
+version = "0.1.0"
 authors = [
 	"Saurav Sachidanand <sauravsachidanand@gmail.com>",
 	"Daniel Collin <daniel@collin.com>",
 	"Denis Kolodin <deniskolodin@gmail.com>",
 ]
-
-license = "MIT"
-repository = "https://www.github.com/saurvs/nfd-rs"
-
-description = "Rust bindings to nativefiledialog"
-keywords = ["file", "dialog", "ui"]
-
+edition = "2024"
+rust-version = "1.85"
+# The Rust code is MIT; the bundled nativefiledialog-extended C library is Zlib.
+license = "MIT AND Zlib"
+repository = "https://github.com/saurvs/nfd-rs"
+documentation = "https://docs.rs/nfd"
+readme = "README.md"
+description = "Native open, save and folder dialogs for Windows, macOS and Linux (bindings to nativefiledialog-extended)"
+keywords = ["file", "dialog", "ui", "native", "gui"]
+categories = ["gui", "api-bindings", "os"]
+links = "nfd"
 build = "build.rs"
+include = [
+	"/Cargo.toml",
+	"/CHANGELOG.md",
+	"/LICENSE.md",
+	"/README.md",
+	"/build.rs",
+	"/csrc/**",
+	"/examples/**",
+	"/src/**",
+	"/nativefiledialog-extended/LICENSE",
+	"/nativefiledialog-extended/src/**",
+]
+
+[features]
+# Linux and the BSDs: use GTK 3 instead of the XDG desktop portal.
+gtk3 = []
+# Adds `DialogBuilder::parent`.
+raw-window-handle = ["dep:raw-window-handle"]
+
+[dependencies]
+raw-window-handle = { version = "0.6", optional = true }
 
 [build-dependencies]
-cc = "1.0.79"
+cc = "1.2.57"
+pkg-config = "0.3.31"
 
+[package.metadata.docs.rs]
+all-features = true
