@@ -613,6 +613,7 @@ mod platform {
 mod parent {
     use crate::ffi::*;
     use raw_window_handle::{HasWindowHandle, RawWindowHandle};
+    use std::os::raw::c_ulong;
 
     /// A parent window, stored as plain integers so that builders stay `Send` and `Sync`. The
     /// builder borrows the window, which keeps the handle valid.
@@ -621,7 +622,7 @@ mod parent {
         None,
         Win32(isize),
         AppKitView(usize),
-        X11(std::os::raw::c_ulong),
+        X11(c_ulong),
     }
 
     impl Parent {
@@ -635,7 +636,7 @@ mod parent {
                 RawWindowHandle::Win32(h) => Parent::Win32(h.hwnd.get()),
                 RawWindowHandle::AppKit(h) => Parent::AppKitView(h.ns_view.as_ptr() as usize),
                 RawWindowHandle::Xlib(h) => Parent::X11(h.window),
-                RawWindowHandle::Xcb(h) => Parent::X11(h.window.get().into()),
+                RawWindowHandle::Xcb(h) => Parent::X11(h.window.get() as c_ulong),
                 _ => Parent::None,
             })
         }

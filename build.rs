@@ -62,6 +62,11 @@ fn main() {
     let mut glue = cc::Build::new();
     glue.include(&include).file("csrc/nfd_rs_glue.c");
 
+    // System libraries are emitted after the static libraries that use them, because GNU ld and
+    // MinGW resolve symbols in command-line order.
+    let mut system_libs: Vec<&str> = Vec::new();
+    let mut pkg_config_package = None;
+
     match target_os.as_str() {
         "macos" => {
             // Without this, cc compiles for the installed SDK's macOS version, which is usually
@@ -80,9 +85,9 @@ fn main() {
                 "NFD_MACOS_ALLOWEDCONTENTTYPES",
                 if content_types { "1" } else { "0" },
             );
-            println!("cargo:rustc-link-lib=framework=AppKit");
+            system_libs.push("framework=AppKit");
             if content_types {
-                println!("cargo:rustc-link-lib=framework=UniformTypeIdentifiers");
+                system_libs.push("framework=UniformTypeIdentifiers");
             }
             if raw_window_handle {
                 glue.file("csrc/nfd_rs_cocoa.m");
@@ -96,9 +101,7 @@ fn main() {
                     .flag("-fno-rtti")
                     .cpp_link_stdlib(None);
             }
-            for lib in ["ole32", "shell32", "uuid"] {
-                println!("cargo:rustc-link-lib={lib}");
-            }
+            system_libs.extend(["ole32", "shell32", "uuid"]);
         }
         "linux" | "freebsd" | "dragonfly" | "netbsd" | "openbsd" => {
             nfd.cpp(true)
@@ -123,6 +126,7 @@ fn main() {
                 )
             };
             let library = pkg_config::Config::new()
+                .cargo_metadata(false)
                 .probe(package)
                 .unwrap_or_else(|err| {
                     panic!(
@@ -131,6 +135,7 @@ fn main() {
                     )
                 });
             nfd.includes(&library.include_paths).file(src.join(source));
+            pkg_config_package = Some(package);
             if !gtk3 {
                 nfd.define("NFD_PORTAL", None);
                 glue.define("NFD_PORTAL", None);
@@ -143,6 +148,16 @@ fn main() {
 
     nfd.compile("nfd");
     glue.compile("nfd_rs_glue");
+
+    for lib in system_libs {
+        println!("cargo:rustc-link-lib={lib}");
+    }
+    if let Some(package) = pkg_config_package {
+        // Probe again, this time letting pkg-config emit the link flags.
+        pkg_config::Config::new()
+            .probe(package)
+            .expect("pkg-config succeeded above");
+    }
 }
 
 /// The macOS version to compile the C code for: `MACOSX_DEPLOYMENT_TARGET` if set, otherwise

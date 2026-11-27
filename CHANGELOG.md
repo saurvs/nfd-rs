@@ -37,8 +37,7 @@ sent fixes while the crate went unreleased, and sorry for the long wait.
 - `DialogBuilder::add_filter(name, extensions)` for filters with your own display names.
 - `DialogBuilder::title` and `DialogBuilder::default_name` (suggested file name for save dialogs).
 - `DialogBuilder::parent` (feature `raw-window-handle`) to keep a dialog in front of your window
-  ([#16](https://github.com/saurvs/nfd-rs/issues/16)). With the `gtk3` backend on X11 this also gives
-  GTK the transient parent it asks for ([#8](https://github.com/saurvs/nfd-rs/issues/8)).
+  ([#16](https://github.com/saurvs/nfd-rs/issues/16)).
 - `dialog_pick_folder()` builder shortcut.
 
 ### Fixed
