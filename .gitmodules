@@ -1,4 +1,3 @@
-[submodule "nativefiledialog"]
-	path = nativefiledialog
-	url = https://github.com/mlabbe/nativefiledialog
-	branch = master
+[submodule "nativefiledialog-extended"]
+	path = nativefiledialog-extended
+	url = https://github.com/btzy/nativefiledialog-extended
